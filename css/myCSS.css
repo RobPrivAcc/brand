@@ -1,0 +1,27 @@
+
+body {
+    height: 100vh;
+}
+
+body {
+    min-height: 100vh;
+}
+.centerTable
+{
+     text-align:center;
+}
+
+tr.border_bottom td {
+  border-bottom:1pt solid black;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+    border-bottom:1pt solid #f0f0f0;
+    border-top:1pt solid #f0f0f0;
+    }
+    
+th{
+    padding: 10px;
+    text-align:center;
+    }  
