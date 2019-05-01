@@ -142,21 +142,43 @@ $fileName = $brandName;
 $fileName = str_replace(" ","_",$fileName).'.xlsx';
 
 
+$fileName_to_save = $fileName;
+
+//$objWriter->save('../files/'.$fileName);
+//
+//$pathToFile = dirname(pathinfo(__FILE__)['dirname']).'\\files\\'.$fileName;
 
 
-$objWriter->save('../files/'.$fileName);
 
-$pathToFile = dirname(pathinfo(__FILE__)['dirname']).'\\files\\'.$fileName;
+
+$objWriter->save('../files/'.$fileName_to_save);
+
+
+$directory = explode("\\",dirname(dirname(__FILE__)));
+
+$pathToFile = dirname(pathinfo(__FILE__)['dirname']).'\\files\\'.$fileName_to_save;
 
 if (file_exists($pathToFile)){
-    //echo "Click to download <a href = '/brand/files/".$fileName."'>".$fileName."</a>";
-	$show = "<br/><div class='row'>";
-        $show .= "<div class='col-xs-12 col-12'>";
-			$show .= "<a href = '/brand/files/".$fileName."'  class='btn btn-primary'><i class='fa fa-download' aria-hidden='true'></i>  Download <b>".$fileName."</b></a>";
-		$show .= "</div>";
-	$show .= "</div>";
-	echo $show;
+    echo "Click to download <a href = '/".$directory[count($directory)-1]."/files/".$fileName_to_save."'>".$fileName_to_save."</a>";    
 }else{
-    echo "Ups.. something went wrong and file wasn't created. Please contact with Robert.";    
+    echo "Ups.. something went wrong and file wasn't created. Contact Robert.";    
 }
+
+
+
+
+
+
+
+//if (file_exists($pathToFile)){
+//    //echo "Click to download <a href = '/brand/files/".$fileName."'>".$fileName."</a>";
+//	$show = "<br/><div class='row'>";
+//        $show .= "<div class='col-xs-12 col-12'>";
+//			$show .= "<a href = '/brand/files/".$fileName."'  class='btn btn-primary'><i class='fa fa-download' aria-hidden='true'></i>  Download <b>".$fileName."</b></a>";
+//		$show .= "</div>";
+//	$show .= "</div>";
+//	echo $show;
+//}else{
+//    echo "Ups.. something went wrong and file wasn't created. Please contact with Robert.";    
+//}
 ?>
