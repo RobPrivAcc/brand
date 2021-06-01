@@ -1,0 +1,10 @@
+{
+  "require": {
+    "monolog/monolog": "2.0.*",
+    "twbs/bootstrap": "5.0.0-beta3",
+    "phpoffice/phpspreadsheet": "^1.17"
+  },
+  "autoload": {
+    "classmap": ["Class"]
+  }
+}

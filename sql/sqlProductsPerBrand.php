@@ -1,7 +1,5 @@
 <?php
-    include('../class/classProduct.php');
-    include('../class/classDb.php');
-    include("../class/classXML.php");
+require dirname( __DIR__ ) . '\vendor\autoload.php';
     set_time_limit(0);
     ini_set('max_execution_time', 3000);
     ini_set('max_input_vars', 9000);
@@ -9,10 +7,10 @@
     $brandName = $_POST['brandName'];  //getting supplier name from select
     //$storeOrAway = $_POST['storeOrAway'];
     
-    $xml = new xmlFile($_SERVER["DOCUMENT_ROOT"].'/dbXML.xml');
-    $db = new dbConnection($xml->getConnectionArray());
+    $xml = new XML($_SERVER["DOCUMENT_ROOT"].'/dbXML.xml');
+    $db = new DB($xml->getConnectionArray());
     
-    $product = new product($db->getDbConnection(2));
+    $product = new Product($db->getDbConnection(2));
     $product->createProducts($brandName);
     
     
@@ -22,8 +20,8 @@
         $product->openConnection($db->getDbConnection($i));
         $product->saleQty();        
     }
-    //echo "<div class='row'>
-    //        <div class='col-xs-12 col-12'>
+    //echo "<div Class='row'>
+    //        <div Class='col-xs-12 col-12'>
     //            <button id='excelExport'><img src='exportExcel.jpg'/><br/>Export to Excel</button>
     //            </div>
     //            </div>";

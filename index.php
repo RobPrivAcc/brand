@@ -13,20 +13,18 @@
   </head>
   <body>
     <?php
-        include("class/classProduct.php");
-        include("class/classDb.php");
-        include("class/classXML.php");
+        require __DIR__ . '\vendor\autoload.php';
     ?>
     <div class="container">
       <div class="row">
         <div class='col-xs-10 col-10'>
           <?php
-          $xml = new xmlFile($_SERVER["DOCUMENT_ROOT"].'/dbXML.xml');
-          $db = new dbConnection($xml->getConnectionArray());
+          $xml = new XML($_SERVER["DOCUMENT_ROOT"].'/dbXML.xml');
+          $db = new DB($xml->getConnectionArray());
           
-            $details = new product($db->getDbConnection(2));
+            $details = new Product($db->getDbConnection(2));
             
-            $select = "<select id='brandName' class='selectpicker form-control'>";
+            $select = "<select id='brandName' Class='selectpicker form-control'>";
             $select .= "<option>Choose Brand</option>";
               $select .= $details->brandList();
             $select .= "</select>";
@@ -86,7 +84,7 @@
           var brandName = $("#brandName option:selected").text();
           //var storeOrAway = $("[name='shopNo']:checked").val();
             if (brandName != 'Choose Brand'){
-                var spinner = '<Div class="text-center"><i class="fa fa-cog fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></DIV>';
+                var spinner = '<Div Class="text-center"><i Class="fa fa-cog fa-spin fa-3x fa-fw"></i><span Class="sr-only">Loading...</span></DIV>';
                 $('#result').html(spinner);
                 
               $.post( "sql/sqlProductsPerBrand.php", { brandName: brandName })

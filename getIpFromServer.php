@@ -1,10 +1,10 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-    include("class/classXML.php");
+    include("Class/XML.php");
     $array = json_decode($_GET['ipArray'], TRUE);
 
 if(isset($array)){
-    $xml = new xmlFile('dbXML.xml');
+    $xml = new XML('dbXML.xml');
 
     foreach($array as $key=>$value){
        var_dump($array);

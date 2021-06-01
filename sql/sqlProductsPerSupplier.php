@@ -1,6 +1,6 @@
 <?php
-    include('../class/classProduct.php');
-    include('../class/classDb.php');
+    include('../Class/Product.php');
+    include('../Class/DB.php');
     set_time_limit(0);
     ini_set('max_execution_time', 3000);
     ini_set('max_input_vars', 9000);
@@ -10,7 +10,7 @@
     
     $db = new dbConnection();
     
-    $product = new product($db->getDbConnection(2));
+    $product = new Product($db->getDbConnection(2));
     echo $product->getDate().'<br/>';
     $allProductsFromSupp = $product->allProdFromSupplier($supplierName);
     
@@ -100,14 +100,14 @@
         for($j=0; $j < $db->getMaxIndex(); $j++){
             
         
-            $prod .= "<td class='centerTable'>";
+            $prod .= "<td Class='centerTable'>";
                 $prod .= $allProdArray[$i]["shop"][$db->getShopsName()[$j][0]]["sale"]." (".$allProdArray[$i]["shop"][$db->getShopsName()[$j][0]]["qty"].")";
             $prod .= "</td>";
             
             $totalSold += $allProdArray[$i]["shop"][$db->getShopsName()[$j][0]]["sale"];
         }
 
-        $prod .= "<td class='centerTable'>".$totalSold*$allProdArray[$i]["salePrice"]."</td>";
+        $prod .= "<td Class='centerTable'>".$totalSold*$allProdArray[$i]["salePrice"]."</td>";
     $prod .= "</tr>";        
   }
 

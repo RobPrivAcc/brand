@@ -12,9 +12,12 @@ $years = json_decode($_POST['years'],true);
 //print_r($years);
 $dataStart = 4;
 
-require_once dirname(__FILE__) . '/../class/Excel/PHPExcel.php';
+//require dirname( __DIR__ ) . '\vendor\autoload.php';
+require $_SERVER['DOCUMENT_ROOT']. '\brand\vendor\autoload.php';
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-$objPHPExcel = new PHPExcel();
+$objPHPExcel = new Spreadsheet();
 
 //$cellArray = array("D","E","F","G","H","I","J","K","L","M");
 $cellArray = array("B","C","D","E","F","G","H","I","J");
@@ -62,7 +65,8 @@ $objPHPExcel->setActiveSheetIndex(0)
 	}
     
 	$objPHPExcel->getActiveSheet()->getStyle('A2:L3')->getFont()->setBold(true);
-	$objPHPExcel->getActiveSheet()->getStyle('A2:L3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+//	$objPHPExcel->getActiveSheet()->getStyle('A2:L3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('A2:L3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
 /*
 	spreadsheet calculations
@@ -98,11 +102,12 @@ $objPHPExcel->setActiveSheetIndex(0)
 				
 								
 				if($diff < 0){
-					$objPHPExcel->getActiveSheet()->getStyle('L'.$cell)->getFont()->setColor( new PHPExcel_Style_Color( PHPExcel_Style_Color::COLOR_RED ) );
+					$objPHPExcel->getActiveSheet()->getStyle('L'.$cell)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_RED );
 				}elseif($diff > 0){
-					$objPHPExcel->getActiveSheet()->getStyle('L'.$cell)->getFont()->setColor( new PHPExcel_Style_Color( PHPExcel_Style_Color::COLOR_DARKGREEN ) );
+					$objPHPExcel->getActiveSheet()->getStyle('L'.$cell)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_DARKGREEN );
+//					$objPHPExcel->getActiveSheet()->getStyle('L'.$cell)->getFont()->setColor( new PHPExcel_Style_Color( PHPExcel_Style_Color::COLOR_DARKGREEN ) );
 				}else{
-					$objPHPExcel->getActiveSheet()->getStyle('L'.$cell)->getFont()->setColor( new PHPExcel_Style_Color( PHPExcel_Style_Color::COLOR_BLACK ) );
+					$objPHPExcel->getActiveSheet()->getStyle('L'.$cell)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_BLACK );
 				}
 				
 				$objPHPExcel->getActiveSheet()->getStyle('C'.$cell)->getNumberFormat()->setFormatCode('€#,##0');
@@ -127,58 +132,25 @@ $objPHPExcel->setActiveSheetIndex(0)
 			$objPHPExcel->getActiveSheet()->getStyle('K1')->getNumberFormat()->setFormatCode('€#,##.##');
 			
 			if($currentYear-$lastYear > 0){
-				$objPHPExcel->getActiveSheet()->getStyle('K1')->getFont()->setColor( new PHPExcel_Style_Color( PHPExcel_Style_Color::COLOR_DARKGREEN ) );
+				$objPHPExcel->getActiveSheet()->getStyle('K1')->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_DARKGREEN );
 			}elseif($currentYear-$lastYear < 0){
-				$objPHPExcel->getActiveSheet()->getStyle('K1')->getFont()->setColor( new PHPExcel_Style_Color( PHPExcel_Style_Color::COLOR_RED ) );
+				$objPHPExcel->getActiveSheet()->getStyle('K1')->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_RED );
 			}else{
-				$objPHPExcel->getActiveSheet()->getStyle('K1')->getFont()->setColor( new PHPExcel_Style_Color( PHPExcel_Style_Color::COLOR_BLACK ) );
+				$objPHPExcel->getActiveSheet()->getStyle('K1')->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_BLACK );
 			}
 			
 			$objPHPExcel->getActiveSheet()->getStyle('K1')->getFont()->setBold(true);
 
-$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-//$objWriter->save(str_replace('.php', '.xlsx', __FILE__));
-$fileName = $brandName;
-$fileName = str_replace(" ","_",$fileName).'.xlsx';
+$writer = new Xlsx($objPHPExcel);
 
-
-$fileName_to_save = $fileName;
-
-//$objWriter->save('../files/'.$fileName);
-//
-//$pathToFile = dirname(pathinfo(__FILE__)['dirname']).'\\files\\'.$fileName;
-
-
-
-
-$objWriter->save('../files/'.$fileName_to_save);
-
+$fileName = $brandName.'.xlsx';
+$writer->save('../files/'.$fileName);
 
 $directory = explode("\\",dirname(dirname(__FILE__)));
-
-$pathToFile = dirname(pathinfo(__FILE__)['dirname']).'\\files\\'.$fileName_to_save;
-
-if (file_exists($pathToFile)){
-    echo "Click to download <a href = '/".$directory[count($directory)-1]."/files/".$fileName_to_save."'>".$fileName_to_save."</a>";    
-}else{
-    echo "Ups.. something went wrong and file wasn't created. Contact Robert.";    
-}
+$pathToFile = dirname(pathinfo(__FILE__)['dirname']).'\\brand\\file\\'.$fileName;
 
 
 
-
-
-
-
-//if (file_exists($pathToFile)){
-//    //echo "Click to download <a href = '/brand/files/".$fileName."'>".$fileName."</a>";
-//	$show = "<br/><div class='row'>";
-//        $show .= "<div class='col-xs-12 col-12'>";
-//			$show .= "<a href = '/brand/files/".$fileName."'  class='btn btn-primary'><i class='fa fa-download' aria-hidden='true'></i>  Download <b>".$fileName."</b></a>";
-//		$show .= "</div>";
-//	$show .= "</div>";
-//	echo $show;
-//}else{
-//    echo "Ups.. something went wrong and file wasn't created. Please contact with Robert.";    
-//}
-?>
+echo '<div class="alert alert-success">
+        <strong>Click to download </strong><a href="/'.$directory[count($directory)-1].'/files/'.$fileName.'" class="alert-link">'.$fileName.'</a>
+    </div>';
